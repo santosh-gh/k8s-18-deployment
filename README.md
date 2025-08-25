@@ -268,3 +268,5 @@ kubectl apply -f ./argocd/applications/multi-environment-helmchart.yaml -n argoc
 
 kubectl apply -f ./apps/app-of-apps.yaml -n argocd
 
+kubectl apply -f ./apps-helm/app-of-apps.yaml -n argocd
+

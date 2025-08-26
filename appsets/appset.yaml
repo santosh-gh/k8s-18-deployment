@@ -23,7 +23,7 @@ spec:
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
-        path: '{{app}}/{{path.basename}}'
+        path: '{{path}}/{{path.basename}}'
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'

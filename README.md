@@ -285,3 +285,7 @@ kubectl apply -f ./appsets/multi-env-multi-manifests-appset.yaml
 kubectl delete -f ./appsets/multi-env-multi-manifests-appset.yaml
 
 
+kubectl apply -f ./appsets/appset.yaml
+kubectl delete -f ./appsets/multi-env-multi-manifests-appset.yaml
+
+

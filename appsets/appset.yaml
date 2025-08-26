@@ -4,23 +4,21 @@ metadata:
   name: matrix-namespaces-example
 spec:
   generators:
-  - matrix:
-      generators:         
-      - git: 
-          repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
-          revision: HEAD
-          directories:  
-          - path: multi-manifests/*
-
-      - list:
-          elements:
-            - namespace: dev
-            - namespace: test
-            - namespace: prod
-
+    - matrix:
+        generators:
+          - git: 
+              repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
+              revision: HEAD
+              directories:  
+                - path: multi-manifests/*
+          - list:
+              elements:
+                - namespace: dev
+                - namespace: test
+                - namespace: prod
   template:
     metadata:
-      name:  '{{path.basename}}-{{namespace}}'
+      name: '{{path.basename}}-{{namespace}}'
     spec:
       project: default
       source:
@@ -34,5 +32,3 @@ spec:
         automated:
           prune: true
           selfHeal: true
-        syncOptions:
-        - CreateNamespace=true

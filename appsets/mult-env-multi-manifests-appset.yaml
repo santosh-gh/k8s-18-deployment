@@ -1,36 +1,49 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: multi-env-multi-manifets
-  namespace: argocd
+  name: multi-env-multi-manifests
 spec:
   generators:
-  - git: 
-      repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
-      revision: HEAD
-      directories:  
-      - path: multi-manifests/*
+    - matrix:
+        generators:
+          # List of microservices
+          - list:
+              elements:
+                - name: config
+                  repoPath: multi-manifests/config
+                - name: rabbitmq
+                  repoPath: multi-manifests/rabbitmq
+                - name: order
+                  repoPath: multi-manifests/order
+                - name: product
+                  repoPath: multi-manifests/product
+                - name: store-front
+                  repoPath: multi-manifests/store-front                
 
-  - list:
-      elements:  
-        - namespace: dev
-        - namespace: test
-        - namespace: prod
+          # List of environments
+          - list:
+              elements:
+                - env: dev
+                  namespace: dev
+                - env: test
+                  namespace: test
+                - env: prod
+                  namespace: prod
+
   template:
     metadata:
-      name: '{{ path.basename }}'
+      name: '{{name}}-{{env}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
-        targetRevision: HEAD
-        path: '{{ path }}'
+        targetRevision: main
+        # Each service can have overlays for each env
+        path: '{{repoPath}}'
       destination:
-        server:  https://kubernetes.default.svc
-        namespace: '{{ namespace }}'
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
-        syncOptions:
-        - CreateNamespace=true

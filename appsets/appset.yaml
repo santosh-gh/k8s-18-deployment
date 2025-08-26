@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: matrix-namespaces-example
+spec:
+  generators:
+    - matrix:
+        generators:
+          - list:
+              elements:
+                - namespace: dev
+                - namespace: prod
+          - git: 
+            repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
+            revision: HEAD
+            directories:  
+            - path: multi-manifests/*
+  template:
+    metadata:
+      name:  '{{path.basename}}-{{namespace}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
+        targetRevision: HEAD
+        path: '{{app}}/{{path.basename}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated: {}

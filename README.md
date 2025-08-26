@@ -278,4 +278,7 @@ kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd
 kubectl apply -f ./appsets/single-manifests-appset.yaml
 kubectl delete -f ./appsets/single-manifests-appset.yaml
 
+kubectl apply -f ./appsets/multi-manifests-appset.yaml
+kubectl delete -f ./appsets/multi-manifests-appset.yaml
+
 

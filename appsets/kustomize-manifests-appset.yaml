@@ -1,30 +1,38 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: single-cluster-app-set
+  name: single-cluster
+  namespace: argocd
 spec:
+  goTemplate: true
   generators:
-    - matrix:
-        generators:
-          - git:
-              repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
-              revision: HEAD
-              directories:
-                - path: kustomize-manifests/order/overlays/*
-
-  template: # used to generate Argo CD Application resources
+    - list:
+        elements:
+          - env: dev
+            namespace: dev
+          - env: test
+            namespace: test
+          - env: prod
+            namespace: prod
+    - list:
+        elements:
+          - service: order
+          - service: product
+          - service: rabbitmq
+          - service: store-front
+  template:
     metadata:
-      name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
+      name: '{{ .service }}-{{ .env }}'
     spec:
-      project: default
+      project: microservices
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
-        path: '{{.path.path}}' # myapp/overlays/dev, myapp/overlays/prod
+        path: kustomize-manifests/{{ .service }}/overlays/{{ .env }}
       destination:
-        server: https://kubernetes.default.svc
-        namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
+        server:  https://kubernetes.default.svc
+        namespace: '{{ .namespace }}'
       syncPolicy:
         automated:
-          selfHeal: true
           prune: true
+          selfHeal: true

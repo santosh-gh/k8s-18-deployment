@@ -1,24 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: matrix-namespaces-example
+  name: microservices-matrix
 spec:
   generators:
     - matrix:
         generators:
-          - git: 
+          - git:
               repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
               revision: HEAD
-              directories:  
+              directories:
                 - path: multi-manifests/*
           - list:
               elements:
-                - namespace: dev
-                - namespace: test
-                - namespace: prod
+                - environment: dev
+                - environment: test
+                - environment: prod
   template:
     metadata:
-      name: '{{path.basename}}-{{namespace}}'
+      name: '{{path.basename}}-{{environment}}'
     spec:
       project: default
       source:
@@ -27,8 +27,4 @@ spec:
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
+        namespace: '{{environment}}'

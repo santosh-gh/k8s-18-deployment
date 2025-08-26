@@ -4,39 +4,27 @@ metadata:
   name: multi-env-multi-manifests
 spec:
   generators:
-    - matrix:
-        generators:
-          # List of microservices
-          - list:
-              elements:
-                - name: config                 
-                - name: rabbitmq                  
-                - name: order                
-                - name: product                
-                - name: store-front                    
-
-          # List of environments
-          - list:
-              elements:
-                - namespace: dev
-                - namespace: test
-                - namespace: prod
+  - matrix:
+      generators:
+      - git:
+          repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
+          revision: HEAD
+          directories:
+          - path: multi-manifests/*
+      - list:
+          elements:
+          - env: dev
+          - env: test
+          - env: prod
   template:
     metadata:
-      name: '{{name}}-{{namespace}}'
+      name: '{{path.basename}}-{{env}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
-        # Each service can have overlays for each env
-        path: multi-manifests/'{{name}}'
+        path: '{{path}}'
       destination:
-        server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-        - CreateNamespace=true
+        server:  https://kubernetes.default.svc
+        namespace:  '{{env}}'

@@ -4,34 +4,24 @@ metadata:
   name: single-cluster
   namespace: argocd
 spec:
-  goTemplate: true
   generators:
-    - list:
-        elements:
-          - env: dev
-            namespace: dev
-          - env: test
-            namespace: test
-          - env: prod
-            namespace: prod
-    - list:
-        elements:
-          - service: order
-          - service: product
-          - service: rabbitmq
-          - service: store-front
+  - list:
+      elements:  
+        - namespace: dev
+        - namespace: test
+        - namespace: prod
   template:
     metadata:
-      name: '{{ .service }}-{{ .env }}'
+      name: '{{ namespace }}-app'
     spec:
       project: default
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
-        path: kustomize-manifests/{{ .service }}/overlays/{{ .env }}
+        path: single-manifests
       destination:
         server:  https://kubernetes.default.svc
-        namespace: '{{ .namespace }}'
+        namespace: '{{ namespace }}'
       syncPolicy:
         automated:
           prune: true

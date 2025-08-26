@@ -24,7 +24,7 @@ spec:
     metadata:
       name: '{{ .service }}-{{ .env }}'
     spec:
-      project: microservices
+      project: default
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD

@@ -5,16 +5,18 @@ metadata:
 spec:
   generators:
     - matrix:
-        generators:
-          - list:
-              elements:
-                - namespace: dev
-                - namespace: prod
+        generators:         
           - git: 
             repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
             revision: HEAD
             directories:  
               - path: multi-manifests/*
+
+          - list:
+            elements:
+              - namespace: dev
+              - namespace: test
+              - namespace: prod
   template:
     metadata:
       name:  '{{path}}-{{namespace}}'

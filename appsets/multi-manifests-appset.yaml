@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: multi-manifets
+  namespace: argocd
+spec:
+  generators:
+  - git: 
+      repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
+      revision: HEAD
+      directories:  
+      - path: multi-manifests/*
+
+  - list:
+      elements:  
+        - namespace: dev
+        - namespace: test
+        - namespace: prod
+  template:
+    metadata:
+      name: '{{ path.basename }}-{{ namespace }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
+        targetRevision: HEAD
+        path: {{ path.path }}
+      destination:
+        server:  https://kubernetes.default.svc
+        namespace: '{{ namespace }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

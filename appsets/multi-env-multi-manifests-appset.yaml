@@ -30,7 +30,7 @@ spec:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
         # Each service can have overlays for each env
-        path: 'multi-manifests/{{name}}'
+        path: multi-manifests/'{{name}}'
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'

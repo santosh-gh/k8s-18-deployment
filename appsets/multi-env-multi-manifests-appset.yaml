@@ -18,13 +18,13 @@ spec:
           - env: prod
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{path.basename}}-{{env}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
-        path: '{{path}}'
+        path: '{{path.basename}}'
       destination:
         server:  https://kubernetes.default.svc
         namespace:  '{{env}}'

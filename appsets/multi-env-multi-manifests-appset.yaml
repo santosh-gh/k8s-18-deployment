@@ -9,36 +9,28 @@ spec:
           # List of microservices
           - list:
               elements:
-                - name: config
-                  repoPath: multi-manifests/config
-                - name: rabbitmq
-                  repoPath: multi-manifests/rabbitmq
-                - name: order
-                  repoPath: multi-manifests/order
-                - name: product
-                  repoPath: multi-manifests/product
-                - name: store-front
-                  repoPath: multi-manifests/store-front                
+                - name: config                 
+                - name: rabbitmq                  
+                - name: order                
+                - name: product                
+                - name: store-front                    
 
           # List of environments
           - list:
               elements:
-                - env: dev
-                  namespace: dev
-                - env: test
-                  namespace: test
-                - env: prod
-                  namespace: prod
+                - namespace: dev
+                - namespace: test
+                - namespace: prod
   template:
     metadata:
-      name: '{{name}}-{{env}}'
+      name: '{{name}}-{{namespace}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
         # Each service can have overlays for each env
-        path: '{{repoPath}}'
+        path: 'multi-manifests/{{name}}'
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'

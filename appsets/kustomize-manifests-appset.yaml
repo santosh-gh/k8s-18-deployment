@@ -7,7 +7,7 @@ spec:
     - matrix:
         generators:
           - git:
-              repoURL: https://github.com/yourorganization/yourrepo.git
+              repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
               revision: HEAD
               directories:
                 - path: kustomize-manifests/*/overlays/*
@@ -18,11 +18,11 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/yourorganization/yourrepo.git
+        repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
         path: '{{.path.path}}' # myapp/overlays/dev, myapp/overlays/prod
       destination:
-        server: https://dev.cluster.server
+        server: https://kubernetes.default.svc
         namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
       syncPolicy:
         automated:

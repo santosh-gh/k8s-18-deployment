@@ -14,9 +14,9 @@ spec:
 
       - list:
           elements:
-          - namespace: dev
-          - namespace: test
-          - namespace: prod
+            - namespace: dev
+            - namespace: test
+            - namespace: prod
 
   template:
     metadata:

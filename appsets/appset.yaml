@@ -14,7 +14,7 @@ spec:
             repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
             revision: HEAD
             directories:  
-            - path: multi-manifests/*
+              - path: multi-manifests/*
   template:
     metadata:
       name:  '{{path.basename}}-{{namespace}}'

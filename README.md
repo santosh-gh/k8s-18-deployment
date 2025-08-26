@@ -271,3 +271,10 @@ kubectl delete -f ./argocd/applications/multi-environment-helmchart.yaml -n argo
 
 kubectl delete -f ./apps/app-of-apps.yaml -n argocd
 kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd
+
+
+
+
+kubectl apply -f ./appsets/kustomize-manifests-appset.yaml
+
+kubectl delete -f ./appsets/kustomize-manifests-appset.yaml

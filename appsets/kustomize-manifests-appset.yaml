@@ -10,7 +10,7 @@ spec:
               repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
               revision: HEAD
               directories:
-                - path: kustomize-manifests/*/overlays/*
+                - path: kustomize-manifests/order/overlays/*
 
   template: # used to generate Argo CD Application resources
     metadata:

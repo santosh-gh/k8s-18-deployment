@@ -111,7 +111,8 @@
     GitHub:  https://github.com/santosh-gh/k8s-14
     YouTube: https://www.youtube.com/watch?v=VAiR3sNavh0
 
-    Part15: ArgoCD
+    Part15: ArgoCD (using Argo CD UI and Dashboard)
+            Create Argo CD applications using Argo CD UI and Dashboard 
 
             Manual methods: Best for learning, experimentation, and very small projects.
             Automated methods: Best for production, team collaboration, and scaling.   
@@ -144,6 +145,12 @@
               - Simply revert the Git commit, Argo syncs back to the previous state.
               - Can promote changes from dev -> test -> prod simply by managing Git branches or directories.
               - Provides a dashboard/UI showing real-time status (Healthy, OutOfSync, Degraded).
+
+    Part16: ArgoCD (using Argo CD UI and Dashboard continue on Part15)
+            Create Argo CD applications using Argo CD UI and Dashboard 
+
+    Part17: ArgoCD (using Argo CD UI and Dashboard continue on Part15)
+            Create Argo CD applications using manifests 
 
 # Architesture
 
@@ -247,26 +254,20 @@
 
 
 
-  argocd app create online-store \
-  --repo https://github.com/santosh-gh/k8s-17-deployment.git \
-  --path single-manifests \
-  --dest-server https://kubernetes.default.svc \
-  --dest-namespace single-manifests
-
-
-argocd app sync online-store
-
-
-kubectl apply -f basic-application.yaml -n argocd
-
 kubectl apply -f ./argocd/applications/single-manifests.yaml -n argocd
 kubectl apply -f ./argocd/applications/single-helmchart.yaml -n argocd
 kubectl apply -f ./argocd/applications/kustomize-manifests.yaml -n argocd
 kubectl apply -f ./argocd/applications/helm-kustomize.yaml -n argocd
 kubectl apply -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
 
-
 kubectl apply -f ./apps/app-of-apps.yaml -n argocd
-
 kubectl apply -f ./apps-helm/app-of-apps.yaml -n argocd
 
+kubectl delete -f ./argocd/applications/single-manifests.yaml -n argocd
+kubectl delete -f ./argocd/applications/single-helmchart.yaml -n argocd
+kubectl delete -f ./argocd/applications/kustomize-manifests.yaml -n argocd
+kubectl delete -f ./argocd/applications/helm-kustomize.yaml -n argocd
+kubectl delete -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
+
+kubectl delete -f ./apps/app-of-apps.yaml -n argocd
+kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd

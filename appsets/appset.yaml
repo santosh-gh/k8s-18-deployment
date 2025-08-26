@@ -17,6 +17,7 @@ spec:
           - namespace: dev
           - namespace: test
           - namespace: prod
+
   template:
     metadata:
       name:  '{{ path.basename }}-{{namespace}}'
@@ -25,9 +26,9 @@ spec:
       source:
         repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
         targetRevision: HEAD
-        path: '{{path}}'
+        path: '{{ path }}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'test'
+        namespace: '{{namespace}}'
       syncPolicy:
         automated: {}

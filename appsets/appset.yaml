@@ -14,6 +14,8 @@ spec:
           - list:
               elements:
                 - namespace: dev
+                - namespace: test
+                - namespace: prod
   template:
     metadata:
       name: '{{path.basename}}-{{namespace}}'
@@ -25,7 +27,7 @@ spec:
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
+        namespace: test-namespace
       syncPolicy:
         automated:
           prune: true

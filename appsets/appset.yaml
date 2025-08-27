@@ -4,18 +4,18 @@ metadata:
   name: microservices-matrix
 spec:
   generators:
-    - matrix:
-        generators:
-          - git:
-              repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
-              revision: HEAD
-              directories:
-                - path: multi-manifests/*
-          - list:
-              elements:
-                - namespace: dev
-                - namespace: test
-                - namespace: prod
+  - matrix:
+      generators:
+      - git:
+          repoURL: https://github.com/santosh-gh/k8s-18-deployment.git
+          revision: HEAD
+          directories:
+          - path: multi-manifests/*
+      - list:
+          elements:
+          - namespace: dev
+          - namespace: test
+          - namespace: prod
   template:
     metadata:
       name: '{{path.basename}}-{{namespace}}'

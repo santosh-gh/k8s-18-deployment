@@ -11,14 +11,14 @@ spec:
               revision: HEAD
               directories:
                 - path: multi-manifests/*
-          # - list:
-          #     elements:
-          #       - namespace: dev
-          #       - namespace: test
-          #       - namespace: prod
+          - list:
+              elements:
+                - namespace: dev
+                - namespace: test
+                - namespace: prod
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{path.basename}}-{{namespace}}'
     spec:
       project: default
       source:
@@ -27,7 +27,7 @@ spec:
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: test5
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true

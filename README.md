@@ -294,13 +294,14 @@ kubectl delete -f ./appsets/multi-env-multi-manifests-appset.yaml
 kubectl describe applicationsets.argoproj.io -n argocd matrix-namespaces-example
 
 
-argocd appset get-items -f ./appsets/appset.yaml
+argocd appset get-items -f ./appsets/multi-manifests-appset.yaml
 
- argocd appset template -f ./appsets/appset.yaml
+ argocd appset template -f ./appsets/multi-manifests-appset.yaml
 
- kubectl apply -f ./appsets/appset.yaml --dry-run=client -o yaml
+ kubectl apply -f ./appsets/multi-manifests-appset.yaml --dry-run=client -o yaml
 
 
  argocd appset get ./appsets/appset.yaml -o yaml
+ argocd appset get ./appsets/multi-manifests-appset.yaml
 
  argocd login localhost:8080 --username admin --password lA2zNg2gO0JwB693 --insecure

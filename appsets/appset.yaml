@@ -14,8 +14,6 @@ spec:
           - list:
               elements:
                 - namespace: dev
-                - namespace: test
-                - namespace: prod
   template:
     metadata:
       name: '{{path.basename}}-{{namespace}}'

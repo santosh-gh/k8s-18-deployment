@@ -19,7 +19,7 @@ spec:
           - namespace: dev
           - namespace: test
           - namespace: prod
-          
+
   template:
     metadata:
       name: '{{app}}-{{namespace}}'
@@ -31,7 +31,7 @@ spec:
         path: multi-manifests/'{{app}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
+        namespace: test
       syncPolicy:
         automated:
           prune: true

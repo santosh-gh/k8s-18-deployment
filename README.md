@@ -304,4 +304,6 @@ argocd appset get-items -f ./appsets/multi-manifests-appset.yaml
  argocd appset get ./appsets/appset.yaml -o yaml
  argocd appset get ./appsets/multi-manifests-appset.yaml
 
+ kubectl apply -f ./appsets/appset.yaml --dry-run=client -o yaml
+
  argocd login localhost:8080 --username admin --password lA2zNg2gO0JwB693 --insecure

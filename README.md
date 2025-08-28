@@ -238,6 +238,7 @@
       # App of apps (deploy multiple services/apps using a root/parent argo CD manifest)
       kubectl apply -f ./apps/app-of-apps.yaml -n argocd
       kubectl apply -f ./apps-helm/app-of-apps.yaml -n argocd
+      kubectl apply -f ./apps-kustomize-manifests-prod/app-of-apps.yaml -n argocd      
 
 
       # Delete the services/apps
@@ -248,7 +249,8 @@
       kubectl delete -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
 
       kubectl delete -f ./apps/app-of-apps.yaml -n argocd
-      kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd      
+      kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd  
+      kubectl delete -f ./apps-kustomize-manifests-prod/app-of-apps.yaml -n argocd    
 
     - Manifest (CRD - ApplicationSet)
 

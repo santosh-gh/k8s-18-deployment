@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prod-kustomize-manifests
+  name: store-front
   namespace: argocd
 spec:
   project: default

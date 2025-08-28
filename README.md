@@ -150,7 +150,12 @@
             Create Argo CD applications using Argo CD UI and Dashboard 
 
     Part17: ArgoCD (using Argo CD UI and Dashboard continue on Part15)
-            Create Argo CD applications using manifests 
+            Create Argo CD applications using manifests (CRD - Application)
+
+    
+    Part18: ArgoCD (using Argo CD UI and Dashboard continue on Part15)
+            Create Argo CD applications using manifests
+            Create Argo CD applications using manifests (CRD - ApplicationSet)
 
 # Architesture
 
@@ -167,7 +172,8 @@
     docker desktop
     docker hub
     git hub
-    kubectl   
+    kubectl
+    Argo CD   
 
 # Step 1: Start Minikube
 
@@ -212,17 +218,50 @@
     Connect a Git repository to Argo CD. This repository should contain the Kubernetes manifests for the applications you want to deploy.
 
     In the Argo CD web interface, Select Setting, Repository, Connect Repository
-    Cretae new app
-    Fill in the details like Application Name, Project, Sync Policy, and the Git repository URL.
-    Specify the path within the repository where the manifests are stored.
-    Choose the destination cluster and namespace.
-    Click on Create to create the application.
+
+# Cretae Argo CD app
+    
+    - Manual (Argo CD Dash Board)
+      Fill in the details like Application Name, Project, Sync Policy, and the Git repository URL.
+      Specify the path within the repository where the manifests are stored.
+      Choose the destination cluster and namespace.
+      Click on Create to create the application.
+
+    - Manifest (CRD - Application)
+
+      kubectl apply -f ./argocd/applications/single-manifests.yaml -n argocd
+      kubectl apply -f ./argocd/applications/single-helmchart.yaml -n argocd
+      kubectl apply -f ./argocd/applications/kustomize-manifests.yaml -n argocd
+      kubectl apply -f ./argocd/applications/helm-kustomize.yaml -n argocd
+      kubectl apply -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
+
+      # App of apps (deploy multiple services/apps using a root/parent argo CD manifest)
+      kubectl apply -f ./apps/app-of-apps.yaml -n argocd
+      kubectl apply -f ./apps-helm/app-of-apps.yaml -n argocd
+
+
+      # Delete the services/apps
+      kubectl delete -f ./argocd/applications/single-manifests.yaml -n argocd
+      kubectl delete -f ./argocd/applications/single-helmchart.yaml -n argocd
+      kubectl delete -f ./argocd/applications/kustomize-manifests.yaml -n argocd
+      kubectl delete -f ./argocd/applications/helm-kustomize.yaml -n argocd
+      kubectl delete -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
+
+      kubectl delete -f ./apps/app-of-apps.yaml -n argocd
+      kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd      
+
+    - Manifest (CRD - ApplicationSet)
+
+      kubectl apply -f ./appsets/single-manifests-appset.yaml
+      kubectl apply -f ./appsets/multi-manifests-appset.yaml
+
+      # Delete the services/apps
+      kubectl delete -f ./appsets/single-manifests-appset.yaml
+      kubectl delete -f ./appsets/multi-manifests-appset.yaml
 
 # Step 7: Sync the Application
 
     After creating the application, you will see it listed on the dashboard. 
-    Click on the Sync button to deploy the application. 
-    Argo CD will pull the manifests from the Git repository and apply them to the Minikube cluster.    
 
 # minikube cluster
 
@@ -253,28 +292,6 @@
     docker push e880613/store-front:v1 
 
 
-
-kubectl apply -f ./argocd/applications/single-manifests.yaml -n argocd
-kubectl apply -f ./argocd/applications/single-helmchart.yaml -n argocd
-kubectl apply -f ./argocd/applications/kustomize-manifests.yaml -n argocd
-kubectl apply -f ./argocd/applications/helm-kustomize.yaml -n argocd
-kubectl apply -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
-
-kubectl apply -f ./apps/app-of-apps.yaml -n argocd
-kubectl apply -f ./apps-helm/app-of-apps.yaml -n argocd
-
-kubectl delete -f ./argocd/applications/single-manifests.yaml -n argocd
-kubectl delete -f ./argocd/applications/single-helmchart.yaml -n argocd
-kubectl delete -f ./argocd/applications/kustomize-manifests.yaml -n argocd
-kubectl delete -f ./argocd/applications/helm-kustomize.yaml -n argocd
-kubectl delete -f ./argocd/applications/multi-environment-helmchart.yaml -n argocd
-
-kubectl delete -f ./apps/app-of-apps.yaml -n argocd
-kubectl delete -f ./apps-helm/app-of-apps.yaml -n argocd
-
-
-
-
 kubectl apply -f ./appsets/single-manifests-appset.yaml
 kubectl delete -f ./appsets/single-manifests-appset.yaml
 
@@ -296,14 +313,18 @@ kubectl describe applicationsets.argoproj.io -n argocd matrix-namespaces-example
 
 argocd appset get-items -f ./appsets/multi-manifests-appset.yaml
 
- argocd appset template -f ./appsets/multi-manifests-appset.yaml
+argocd appset template -f ./appsets/multi-manifests-appset.yaml
 
- kubectl apply -f ./appsets/multi-manifests-appset.yaml --dry-run=client -o yaml
+kubectl apply -f ./appsets/multi-manifests-appset.yaml --dry-run=client -o yaml
 
 
- argocd appset get ./appsets/appset.yaml -o yaml
- argocd appset get ./appsets/multi-manifests-appset.yaml
+argocd appset get ./appsets/appset.yaml -o yaml
+argocd appset get ./appsets/multi-manifests-appset.yaml
 
- kubectl apply -f ./appsets/appset.yaml --dry-run=client -o yaml
+kubectl apply -f ./appsets/appset.yaml --dry-run=client -o yaml
 
- argocd login localhost:8080 --username admin --password lA2zNg2gO0JwB693 --insecure
+argocd login localhost:8080 --username admin --password lA2zNg2gO0JwB693 --insecure
+
+
+kubectl apply -f ./appsets/test.yaml
+kubectl apply -f ./appsets/test.yaml --dry-run=client -o yaml
